@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container my-5">
+
+    <!-- Encabezado -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Bienvenido</h1>
+        <p class="lead">¿Cómo está hoy?</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+
+        <!-- Card de información personal -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-3">Información Personal</h3>
+                    <p class="card-text"><strong>Nombre:</strong> Walter Leonel Linares Martínez</p>
+                    <p class="card-text"><strong>Carrera:</strong> Ingeniería en Desarrollo de Software</p>
+                    <p class="card-text"><strong>Asignatura:</strong> Desarrollo Multiplataforma de Aplicaciones Web</p>
+                    <hr />
+                    <p class="card-text">
+                        <strong>Fecha y hora actual:</strong><br />
+                        <span class="badge bg-secondary fs-6">@DateTime.Now</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de la imagen -->
+        <div class="col-md-5">
+            <div class="card shadow-sm h-100 text-center">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-3">Mi Imagen</h3>
+                    <img src="~/imagenes/AndoridLogo.png"
+                         class="img-fluid rounded shadow"
+                         style="max-width: 250px;"
+                         alt="Imagen personal" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección creativa: Mis películas/series y videojuegos favoritos -->
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-11">
+
+            <!-- Películas y Series -->
+            <div class="card shadow-sm p-4 mb-4">
+                <h3 class="mb-3">🎬 Mis Películas y Series Favoritas</h3>
+                <p class="text-muted">Algunas de las historias que más disfruto ver:</p>
+
+                <div class="row g-4">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card h-100">
+                            <img src="~/imagenes/pelicula1.jpg" class="card-img-top" alt="Película 1" style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">El viaje de chihiro</h5>
+                                <span class="badge bg-danger">Acción, Misterios, Fantasia</span>
+                                <span class="badge bg-secondary">2001</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card h-100">
+                            <img src="~/imagenes/pelicula2.jpg" class="card-img-top" alt="Serie 1" style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">El castillo ambulante</h5>
+                                <span class="badge bg-primary">Misterio, Fantasia , Magia, Accion</span>
+                                <span class="badge bg-secondary">2004</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card h-100">
+                            <img src="~/imagenes/pelicula3.jpg" class="card-img-top" alt="Película 3" style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">La Tumba de las luciernagas</h5>
+                                <span class="badge bg-success">Drama para adultos,Historico,Guerra </span>
+                                <span class="badge bg-secondary">1988</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Videojuegos -->
+            <div class="card shadow-sm p-4">
+                <h3 class="mb-3">🎮 Mis Videojuegos Favoritos</h3>
+                <p class="text-muted">Los juegos con los que más horas he pasado:</p>
+
+                <div class="row g-4">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card h-100">
+                            <img src="~/imagenes/juego1.jpg" class="card-img-top" alt="Videojuego 1" style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Dave the diver</h5>
+                                <span class="badge bg-dark">Casual, administracion, pixel art </span>
+                                <span class="badge bg-secondary">PC, Nintendo Switch</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card h-100">
+                            <img src="~/imagenes/juego2.jpg" class="card-img-top" alt="Videojuego 2" style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Fantasy Life i: The Girl Who Steal</h5>
+                                <span class="badge bg-warning text-dark">Aventura, Fantasia, Accion, Exploracion</span>
+                                <span class="badge bg-secondary">PC, Nintendo Switch</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="card h-100">
+                            <img src="~/imagenes/juego3.png" class="card-img-top" alt="Videojuego 3" style="height:250px; object-fit:cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">Stardew Valley</h5>
+                                <span class="badge bg-info text-dark">Administracion, Pixel Art, Aventura , Accion,Agricultura</span>
+                                <span class="badge bg-secondary">Moviles, Pc , Nintendo Switch</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
