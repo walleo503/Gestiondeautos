@@ -1,0 +1,14 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div>
+    <h2></h2>
+    <!-- Requiere casteo si accesskey=" tipo complejo en ViewData -->
+    <p>Ventas : @ViewBag["Moneda"] @ViewData["TotalVentas"]</p>
+
+    <!-- ViewBag no requiere casteo explicito-->
+    <p>Clientes Nuevos : @ViewBag.NuevosClientes</p>
+    @if (ViewBag.MetaAlcanzada){
+        <span class="badge">¡Meta Cumplida!</span>
+    }
+</div>

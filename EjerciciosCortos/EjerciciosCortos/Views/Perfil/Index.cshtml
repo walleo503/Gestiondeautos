@@ -1,0 +1,14 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class= "card">
+    <h1>@ViewBag.Nombre</h1>
+    <h3>@ViewBag.Ocupacion</h3>
+    <p> Estado: @(ViewBag.Disponible ? "Disponible" : "Ocupacion")</p>
+    <ul> 
+        @foreach(var hab in ViewBag.Habilidades){
+            <li>@hab</li>
+        }
+    </ul>
+
+</div>
