@@ -1,0 +1,41 @@
+@model Administraar_empresacdec_Calzado_Innovador_S.A_.Models.OrdenProduccion
+
+@{
+    ViewData["Title"] = "Eliminar orden";
+}
+
+<h1>Eliminar orden de producción</h1>
+
+<div class="alert alert-warning">
+    ¿Está seguro que desea eliminar esta orden? Esta acción no se puede deshacer.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Número de orden</dt>
+    <dd class="col-sm-9">@Model.NumeroOrden</dd>
+
+    <dt class="col-sm-3">Producto</dt>
+    <dd class="col-sm-9">@Model.Producto</dd>
+
+    <dt class="col-sm-3">Cantidad a producir</dt>
+    <dd class="col-sm-9">@Model.CantidadAProducir</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">@Model.Estado</dd>
+
+    <dt class="col-sm-3">Procesos asociados</dt>
+    <dd class="col-sm-9">
+        <ul class="mb-0">
+            @foreach (var op in Model.OrdenProcesos)
+            {
+                <li>@op.ProcesoFabricacion.Nombre</li>
+            }
+        </ul>
+    </dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

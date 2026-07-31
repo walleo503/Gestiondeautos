@@ -1,0 +1,89 @@
+@model OrdenProduccion
+@{
+    ViewData["Title"] = "Detalle de Orden";
+}
+
+<h1><i class="bi bi-clipboard-data"></i> Orden @Model.Codigo</h1>
+
+<div class="card p-4 bg-white mb-4">
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Producto:</strong> @Model.Producto</p>
+            <p><strong>Cantidad a Producir:</strong> @Model.CantidadAProducir</p>
+            <p><strong>Estado:</strong> <span class="badge badge-estado-@Model.Estado">@Model.Estado</span></p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Fecha de Creación:</strong> @Model.FechaCreacion.ToString("dd/MM/yyyy")</p>
+            <p><strong>Fecha de Entrega Estimada:</strong> @Model.FechaEntregaEstimada.ToString("dd/MM/yyyy")</p>
+            <p><strong>Observaciones:</strong> @(string.IsNullOrWhiteSpace(Model.Observaciones) ? "—" : Model.Observaciones)</p>
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <strong>Avance General:</strong>
+        <div class="progress mt-1">
+            <div class="progress-bar bg-success" style="width:@(Model.PorcentajeAvance)%">@Model.PorcentajeAvance%</div>
+        </div>
+    </div>
+</div>
+
+<h4>Procesos de Fabricación Asociados</h4>
+
+@if (!Model.OrdenProcesos.Any())
+{
+    <div class="alert alert-warning">Esta orden no tiene procesos asociados.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover bg-white align-middle">
+            <thead>
+                <tr>
+                    <th>Secuencia</th>
+                    <th>Proceso</th>
+                    <th>Duración Estimada</th>
+                    <th>Completado</th>
+                    <th>Fecha Completado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var op in Model.OrdenProcesos.OrderBy(o => o.Secuencia))
+                {
+                    <tr>
+                        <td>@op.Secuencia</td>
+                        <td>@op.ProcesoFabricacion?.Nombre</td>
+                        <td>@op.ProcesoFabricacion?.DuracionEstimadaHoras h</td>
+                        <td>
+                            @if (op.Completado)
+                            {
+                                <span class="badge bg-success"><i class="bi bi-check-lg"></i> Completado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Pendiente</span>
+                            }
+                        </td>
+                        <td>@(op.FechaCompletado?.ToString("dd/MM/yyyy") ?? "—")</td>
+                        <td>
+                            <form asp-action="MarcarProceso" method="post" class="d-inline">
+                                <input type="hidden" name="ordenProcesoId" value="@op.OrdenProcesoId" />
+                                <input type="hidden" name="ordenId" value="@Model.OrdenProduccionId" />
+                                <button type="submit" class="btn btn-sm @(op.Completado ? "btn-outline-secondary" : "btn-outline-success")">
+                                    @(op.Completado ? "Desmarcar" : "Marcar completado")
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.OrdenProduccionId" class="btn btn-primary">
+        <i class="bi bi-pencil"></i> Editar Orden y Procesos
+    </a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Volver al listado</a>
+</div>

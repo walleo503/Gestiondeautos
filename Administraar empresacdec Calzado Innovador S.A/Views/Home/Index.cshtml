@@ -1,0 +1,50 @@
+@model Administraar_empresacdec_Calzado_Innovador_S.A_.Models.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="mb-4">
+    <h1>Calzado Innovador S.A.</h1>
+    <p class="text-muted">Gestión de órdenes de producción y procesos de fabricación.</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <div class="fs-2 fw-bold">@Model.TotalOrdenes</div>
+                <div class="text-muted">Órdenes totales</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <div class="fs-2 fw-bold text-secondary">@Model.OrdenesPendientes</div>
+                <div class="text-muted">Pendientes</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <div class="fs-2 fw-bold text-warning">@Model.OrdenesEnProceso</div>
+                <div class="text-muted">En proceso</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <div class="fs-2 fw-bold text-success">@Model.OrdenesCompletadas</div>
+                <div class="text-muted">Completadas</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex gap-2">
+    <a asp-controller="Ordenes" asp-action="Index" class="btn btn-primary">Ver órdenes de producción</a>
+    <a asp-controller="Procesos" asp-action="Index" class="btn btn-outline-secondary">Ver procesos de fabricación (@Model.TotalProcesos)</a>
+</div>

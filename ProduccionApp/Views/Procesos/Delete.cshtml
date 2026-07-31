@@ -1,0 +1,32 @@
+@model ProcesoFabricacion
+@{
+    ViewData["Title"] = "Eliminar Proceso";
+}
+
+<h1><i class="bi bi-trash text-danger"></i> Eliminar Proceso de Fabricación</h1>
+
+<div class="alert alert-danger">
+    ¿Está seguro que desea eliminar este proceso de fabricación?
+</div>
+
+<div class="card p-4 bg-white mb-3">
+    <p><strong>Nombre:</strong> @Model.Nombre</p>
+    <p><strong>Descripción:</strong> @Model.Descripcion</p>
+    <p><strong>Duración Estimada:</strong> @Model.DuracionEstimadaHoras h</p>
+    <p><strong>Usado en:</strong> @Model.OrdenProcesos.Count orden(es) de producción</p>
+</div>
+
+@if (Model.OrdenProcesos.Any())
+{
+    <div class="alert alert-warning">
+        Este proceso está asociado a @Model.OrdenProcesos.Count orden(es) de producción y no podrá eliminarse mientras siga en uso.
+    </div>
+}
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="ProcesoFabricacionId" />
+    <button type="submit" class="btn btn-danger" @(Model.OrdenProcesos.Any() ? "disabled" : "")>
+        <i class="bi bi-trash"></i> Sí, eliminar
+    </button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

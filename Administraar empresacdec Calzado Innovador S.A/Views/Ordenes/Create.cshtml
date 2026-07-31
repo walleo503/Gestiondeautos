@@ -1,0 +1,84 @@
+@model Administraar_empresacdec_Calzado_Innovador_S.A_.Models.ViewModels.OrdenFormViewModel
+
+@{
+    ViewData["Title"] = "Nueva orden de producción";
+}
+
+<h1>Nueva orden de producción</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="NumeroOrden" class="form-label"></label>
+                <input asp-for="NumeroOrden" class="form-control" />
+                <span asp-validation-for="NumeroOrden" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Producto" class="form-label"></label>
+                <input asp-for="Producto" class="form-control" />
+                <span asp-validation-for="Producto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CantidadAProducir" class="form-label"></label>
+                <input asp-for="CantidadAProducir" class="form-control" />
+                <span asp-validation-for="CantidadAProducir" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FechaCreacion" class="form-label"></label>
+                    <input asp-for="FechaCreacion" class="form-control" />
+                    <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FechaEntregaEstimada" class="form-label"></label>
+                    <input asp-for="FechaEntregaEstimada" class="form-control" />
+                    <span asp-validation-for="FechaEntregaEstimada" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Observaciones" class="form-label"></label>
+                <textarea asp-for="Observaciones" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Procesos de fabricación</label>
+                <span asp-validation-for="ProcesosSeleccionados" class="text-danger d-block"></span>
+                <div class="border rounded p-3">
+                    @if (!Model.ProcesosDisponibles.Any())
+                    {
+                        <p class="text-muted mb-0">
+                            No hay procesos registrados. <a asp-controller="Procesos" asp-action="Create">Crear un proceso</a> primero.
+                        </p>
+                    }
+                    @for (int i = 0; i < Model.ProcesosDisponibles.Count; i++)
+                    {
+                        var proceso = Model.ProcesosDisponibles[i];
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox"
+                                   name="ProcesosSeleccionados"
+                                   value="@proceso.Id"
+                                   id="proceso_@proceso.Id"
+                                   checked="@proceso.Seleccionado" />
+                            <label class="form-check-label" for="proceso_@proceso.Id">@proceso.Nombre</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

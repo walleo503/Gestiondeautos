@@ -1,0 +1,88 @@
+@model List<OrdenProduccion>
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="mb-4">
+    <h1><i class="bi bi-house-door"></i> Panel Principal</h1>
+    <p class="text-muted">Bienvenido al sistema de gestión de órdenes de producción de Calzado Innovador S.A.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card text-center p-3">
+            <i class="bi bi-clipboard-data text-primary" style="font-size:1.8rem;"></i>
+            <h2>@ViewBag.TotalOrdenes</h2>
+            <p class="mb-0 text-muted">Órdenes de Producción</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card text-center p-3">
+            <i class="bi bi-gear text-secondary" style="font-size:1.8rem;"></i>
+            <h2>@ViewBag.TotalProcesos</h2>
+            <p class="mb-0 text-muted">Procesos de Fabricación</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card text-center p-3">
+            <i class="bi bi-hourglass-split text-warning" style="font-size:1.8rem;"></i>
+            <h2>@ViewBag.OrdenesEnProceso</h2>
+            <p class="mb-0 text-muted">Órdenes en Proceso</p>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="card dashboard-card text-center p-3">
+            <i class="bi bi-check-circle text-success" style="font-size:1.8rem;"></i>
+            <h2>@ViewBag.OrdenesCompletadas</h2>
+            <p class="mb-0 text-muted">Órdenes Completadas</p>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Órdenes Recientes</h4>
+    <a asp-controller="Ordenes" asp-action="Create" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus-circle"></i> Nueva Orden
+    </a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted">Aún no hay órdenes de producción registradas.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Estado</th>
+                    <th>Avance</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orden in Model)
+                {
+                    <tr>
+                        <td>@orden.Codigo</td>
+                        <td>@orden.Producto</td>
+                        <td><span class="badge badge-estado-@orden.Estado">@orden.Estado</span></td>
+                        <td style="min-width:150px;">
+                            <div class="progress">
+                                <div class="progress-bar bg-success" style="width:@(orden.PorcentajeAvance)%">@orden.PorcentajeAvance%</div>
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-controller="Ordenes" asp-action="Details" asp-route-id="@orden.OrdenProduccionId" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-eye"></i> Ver
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

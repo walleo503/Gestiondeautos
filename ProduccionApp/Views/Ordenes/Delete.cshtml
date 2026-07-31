@@ -1,0 +1,24 @@
+@model OrdenProduccion
+@{
+    ViewData["Title"] = "Eliminar Orden";
+}
+
+<h1><i class="bi bi-trash text-danger"></i> Eliminar Orden de Producción</h1>
+
+<div class="alert alert-danger">
+    ¿Está seguro que desea eliminar esta orden? Esta acción también eliminará las asociaciones con sus procesos de fabricación y no se puede deshacer.
+</div>
+
+<div class="card p-4 bg-white mb-3">
+    <p><strong>Código:</strong> @Model.Codigo</p>
+    <p><strong>Producto:</strong> @Model.Producto</p>
+    <p><strong>Cantidad a Producir:</strong> @Model.CantidadAProducir</p>
+    <p><strong>Estado:</strong> <span class="badge badge-estado-@Model.Estado">@Model.Estado</span></p>
+    <p><strong>Procesos Asociados:</strong> @string.Join(", ", Model.OrdenProcesos.Select(op => op.ProcesoFabricacion?.Nombre))</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="OrdenProduccionId" />
+    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

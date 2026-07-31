@@ -1,0 +1,51 @@
+@model List<ProcesoFabricacion>
+@{
+    ViewData["Title"] = "Procesos de Fabricación";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1><i class="bi bi-gear"></i> Procesos de Fabricación</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nuevo Proceso
+    </a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">No hay procesos de fabricación registrados todavía.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover bg-white align-middle">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Duración Estimada</th>
+                    <th>Órdenes que lo usan</th>
+                    <th style="width:160px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var proceso in Model)
+                {
+                    <tr>
+                        <td>@proceso.Nombre</td>
+                        <td>@proceso.Descripcion</td>
+                        <td>@proceso.DuracionEstimadaHoras h</td>
+                        <td><span class="badge bg-secondary">@proceso.OrdenProcesos.Count</span></td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@proceso.ProcesoFabricacionId" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@proceso.ProcesoFabricacionId" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

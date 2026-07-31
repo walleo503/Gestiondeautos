@@ -1,0 +1,31 @@
+@model Administraar_empresacdec_Calzado_Innovador_S.A_.Models.ProcesoFabricacion
+
+@{
+    ViewData["Title"] = "Eliminar proceso";
+}
+
+<h1>Eliminar proceso de fabricación</h1>
+
+<div class="alert alert-warning">
+    ¿Está seguro que desea eliminar este proceso? Esta acción no se puede deshacer.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Nombre</dt>
+    <dd class="col-sm-9">@Model.Nombre</dd>
+
+    <dt class="col-sm-3">Descripción</dt>
+    <dd class="col-sm-9">@Model.Descripcion</dd>
+
+    <dt class="col-sm-3">Duración estimada</dt>
+    <dd class="col-sm-9">@Model.DuracionEstimadaHoras horas</dd>
+
+    <dt class="col-sm-3">Órdenes asociadas</dt>
+    <dd class="col-sm-9">@Model.OrdenProcesos.Count</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</form>

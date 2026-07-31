@@ -1,0 +1,66 @@
+@model List<OrdenProduccion>
+@{
+    ViewData["Title"] = "Órdenes de Producción";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1><i class="bi bi-clipboard-data"></i> Órdenes de Producción</h1>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nueva Orden
+    </a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">No hay órdenes de producción registradas todavía.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover bg-white align-middle">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha Creación</th>
+                    <th>Fecha Entrega</th>
+                    <th>Estado</th>
+                    <th>Avance</th>
+                    <th>Procesos</th>
+                    <th style="width:220px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orden in Model)
+                {
+                    <tr>
+                        <td>@orden.Codigo</td>
+                        <td>@orden.Producto</td>
+                        <td>@orden.CantidadAProducir</td>
+                        <td>@orden.FechaCreacion.ToString("dd/MM/yyyy")</td>
+                        <td>@orden.FechaEntregaEstimada.ToString("dd/MM/yyyy")</td>
+                        <td><span class="badge badge-estado-@orden.Estado">@orden.Estado</span></td>
+                        <td style="min-width:120px;">
+                            <div class="progress">
+                                <div class="progress-bar bg-success" style="width:@(orden.PorcentajeAvance)%">@orden.PorcentajeAvance%</div>
+                            </div>
+                        </td>
+                        <td>@orden.OrdenProcesos.Count</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@orden.OrdenProduccionId" class="btn btn-sm btn-outline-secondary" title="Ver detalle">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@orden.OrdenProduccionId" class="btn btn-sm btn-outline-primary" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@orden.OrdenProduccionId" class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

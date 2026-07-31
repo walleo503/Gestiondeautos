@@ -1,0 +1,64 @@
+@model Administraar_empresacdec_Calzado_Innovador_S.A_.Models.ViewModels.OrdenDetalleViewModel
+@using Administraar_empresacdec_Calzado_Innovador_S.A_.Models.Enums
+
+@{
+    ViewData["Title"] = "Detalle de orden";
+}
+
+<h1>Orden @Model.Orden.NumeroOrden</h1>
+
+<dl class="row">
+    <dt class="col-sm-3">Producto</dt>
+    <dd class="col-sm-9">@Model.Orden.Producto</dd>
+
+    <dt class="col-sm-3">Cantidad a producir</dt>
+    <dd class="col-sm-9">@Model.Orden.CantidadAProducir</dd>
+
+    <dt class="col-sm-3">Fecha de creación</dt>
+    <dd class="col-sm-9">@Model.Orden.FechaCreacion.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Fecha estimada de entrega</dt>
+    <dd class="col-sm-9">@Model.Orden.FechaEntregaEstimada.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">@Model.Orden.Estado</dd>
+
+    <dt class="col-sm-3">Observaciones</dt>
+    <dd class="col-sm-9">@Model.Orden.Observaciones</dd>
+</dl>
+
+<h2 class="h4 mt-4">Avance de procesos (@Model.ProcesosCompletados / @Model.TotalProcesos)</h2>
+
+<div class="progress mb-3" role="progressbar" aria-valuenow="@Model.PorcentajeAvance" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar bg-success" style="width: @Model.PorcentajeAvance%">@Model.PorcentajeAvance%</div>
+</div>
+
+<ul class="list-group mb-4">
+    @foreach (var op in Model.Orden.OrdenProcesos.OrderBy(o => o.Secuencia))
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <strong>@op.ProcesoFabricacion.Nombre</strong>
+                @if (op.Completado && op.FechaCompletado != null)
+                {
+                    <div class="text-muted small">Completado el @op.FechaCompletado.Value.ToString("dd/MM/yyyy HH:mm")</div>
+                }
+            </div>
+            <form asp-action="AlternarProceso" method="post">
+                <input type="hidden" name="ordenId" value="@Model.Orden.Id" />
+                <input type="hidden" name="procesoId" value="@op.ProcesoFabricacionId" />
+                @if (op.Completado)
+                {
+                    <button type="submit" class="btn btn-sm btn-success">Completado</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Marcar como completado</button>
+                }
+            </form>
+        </li>
+    }
+</ul>
+
+<a asp-action="Edit" asp-route-id="@Model.Orden.Id" class="btn btn-outline-secondary">Editar orden</a>
+<a asp-action="Index" class="btn btn-outline-primary">Volver al listado</a>

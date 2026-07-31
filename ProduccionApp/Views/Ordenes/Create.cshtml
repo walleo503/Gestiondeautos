@@ -1,0 +1,92 @@
+@model OrdenFormViewModel
+@{
+    ViewData["Title"] = "Nueva Orden de Producción";
+}
+
+<h1><i class="bi bi-plus-circle"></i> Nueva Orden de Producción</h1>
+
+<div class="card p-4 bg-white">
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="Codigo" class="form-label"></label>
+                <input asp-for="Codigo" class="form-control" placeholder="Ej: OP-2026-001" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="col-md-8 mb-3">
+                <label asp-for="Producto" class="form-label"></label>
+                <input asp-for="Producto" class="form-control" placeholder="Ej: Zapato deportivo modelo Runner" />
+                <span asp-validation-for="Producto" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="CantidadAProducir" class="form-label"></label>
+                <input asp-for="CantidadAProducir" class="form-control" type="number" min="1" />
+                <span asp-validation-for="CantidadAProducir" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="FechaCreacion" class="form-label"></label>
+                <input asp-for="FechaCreacion" class="form-control" type="date" />
+                <span asp-validation-for="FechaCreacion" class="text-danger"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="FechaEntregaEstimada" class="form-label"></label>
+                <input asp-for="FechaEntregaEstimada" class="form-control" type="date" />
+                <span asp-validation-for="FechaEntregaEstimada" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="Estado" class="form-label"></label>
+                <select asp-for="Estado" class="form-select" asp-items="Html.GetEnumSelectList<EstadoOrden>()"></select>
+            </div>
+            <div class="col-md-8 mb-3">
+                <label asp-for="Observaciones" class="form-label"></label>
+                <input asp-for="Observaciones" class="form-control" />
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+        </div>
+
+        <hr />
+        <h5>Procesos de Fabricación</h5>
+        <p class="text-muted">Selecciona los procesos que componen esta orden (debe seleccionar al menos uno).</p>
+        <span asp-validation-for="ProcesosSeleccionados" class="text-danger"></span>
+
+        <div class="row">
+            @foreach (var proceso in Model.ProcesosDisponibles)
+            {
+                <div class="col-md-4 col-sm-6 mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               name="ProcesosSeleccionados" value="@proceso.ProcesoFabricacionId"
+                               id="proceso_@proceso.ProcesoFabricacionId" />
+                        <label class="form-check-label" for="proceso_@proceso.ProcesoFabricacionId">
+                            @proceso.Nombre <small class="text-muted">(@proceso.DuracionEstimadaHoras h)</small>
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (!Model.ProcesosDisponibles.Any())
+        {
+            <div class="alert alert-warning mt-3">
+                No hay procesos de fabricación registrados. <a asp-controller="Procesos" asp-action="Create">Crea uno primero</a>.
+            </div>
+        }
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
