@@ -1,0 +1,13 @@
+@model CotizacionReparacion
+@{ ViewData["Title"] = "Detalle de cotizacion"; }
+
+<h1>Cotizacion: @Model.Vehiculo?.Marca @Model.Vehiculo?.Modelo</h1>
+<dl class="row">
+    <dt class="col-sm-3">Pieza</dt><dd class="col-sm-9">@Model.Pieza (@Model.Modelo)</dd>
+    <dt class="col-sm-3">Precio pieza</dt><dd class="col-sm-9">$@Model.Precio.ToString("N2")</dd>
+    <dt class="col-sm-3">Mano de obra</dt><dd class="col-sm-9">$@Model.ManoDeObra.ToString("N2")</dd>
+    <dt class="col-sm-3">Otro</dt><dd class="col-sm-9">@Model.Otro</dd>
+    <dt class="col-sm-3">Total</dt><dd class="col-sm-9"><strong>$@Model.Total.ToString("N2")</strong></dd>
+</dl>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

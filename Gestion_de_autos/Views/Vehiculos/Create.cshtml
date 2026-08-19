@@ -1,0 +1,49 @@
+@model DatosAuto
+@{ ViewData["Title"] = "Nuevo vehiculo"; }
+
+<h1>Registrar vehiculo</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label">Vendedor</label>
+        <select asp-for="Usuario" class="form-select" asp-items="ViewBag.Usuario"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Marca" class="form-label"></label>
+        <input asp-for="Marca" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Modelo" class="form-label"></label>
+        <input asp-for="Modelo" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="CostoCompra" class="form-label"></label>
+        <input asp-for="CostoCompra" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PrecioVenta" class="form-label"></label>
+        <input asp-for="PrecioVenta" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Descripcion" class="form-label"></label>
+        <textarea asp-for="Descripcion" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Danos" class="form-label"></label>
+        <input asp-for="Danos" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PiezasFaltantes" class="form-label"></label>
+        <input asp-for="PiezasFaltantes" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Estado" class="form-label"></label>
+        <select asp-for="Estado" class="form-select">
+            <option value="disponible">Disponible</option>
+            <option value="vendido">Vendido</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

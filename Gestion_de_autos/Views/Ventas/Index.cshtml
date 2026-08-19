@@ -1,0 +1,26 @@
+@model IEnumerable<HistorialVendido>
+@{ ViewData["Title"] = "Ventas"; }
+
+<h1>Historial de ventas</h1>
+<p><a asp-action="Create" class="btn btn-primary">+ Registrar venta</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th><th>Vehiculo</th><th>Comprador</th><th>Precio final</th><th>Vendedor</th><th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FechaVenta.ToString("dd/MM/yyyy")</td>
+                <td>@item.Vehiculo?.Marca @item.Vehiculo?.Modelo</td>
+                <td>@item.CompradorNombre</td>
+                <td>$@item.PrecioFinal.ToString("N2")</td>
+                <td>@item.Vendedor?.Nombre</td>
+                <td><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Ver</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

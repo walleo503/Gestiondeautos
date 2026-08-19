@@ -1,0 +1,75 @@
+@using Gestion_de_autos.Models.Estadisticas
+@{
+    ViewData["Title"] = "Estadisticas";
+    var ganMensuales = ViewData["GananciasMensuales"] as List<VistaGananciasMensuales>;
+    var masVendidos = ViewData["VehiculosMasVendidos"] as List<VistaVehiculosMasVendidos>;
+    var ganPorVendedor = ViewData["GananciasPorVendedor"] as List<VistaGananciasPorVendedor>;
+    string[] meses = { "", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+}
+
+<h1>Estadisticas de ventas</h1>
+<p class="text-muted">Estos datos se calculan automaticamente desde las vistas SQL de la base de datos.</p>
+
+<h3 class="mt-4">Ganancias por mes</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Vendedor</th><th>Mes</th><th>Autos vendidos</th><th>Total ventas</th><th>Ganancia</th></tr>
+    </thead>
+    <tbody>
+        @if (ganMensuales != null)
+        {
+            @foreach (var g in ganMensuales)
+            {
+                <tr>
+                    <td>@g.Vendedor</td>
+                    <td>@meses[g.Mes] @g.Anio</td>
+                    <td>@g.AutosVendidos</td>
+                    <td>$@g.TotalVentas.ToString("N2")</td>
+                    <td class="text-success fw-bold">$@g.GananciaTotal.ToString("N2")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h3 class="mt-4">Vehiculos mas vendidos</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Marca</th><th>Modelo</th><th>Veces vendido</th><th>Total generado</th></tr>
+    </thead>
+    <tbody>
+        @if (masVendidos != null)
+        {
+            @foreach (var v in masVendidos)
+            {
+                <tr>
+                    <td>@v.Marca</td>
+                    <td>@v.Modelo</td>
+                    <td><span class="badge bg-primary">@v.VecesVendido</span></td>
+                    <td>$@v.TotalGenerado.ToString("N2")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<h3 class="mt-4">Ganancia total por vendedor</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr><th>Vendedor</th><th>Autos vendidos</th><th>Ganancia total</th></tr>
+    </thead>
+    <tbody>
+        @if (ganPorVendedor != null)
+        {
+            @foreach (var g in ganPorVendedor)
+            {
+                <tr>
+                    <td>@g.Vendedor</td>
+                    <td>@g.AutosVendidos</td>
+                    <td class="text-success fw-bold">$@g.GananciaTotal.ToString("N2")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

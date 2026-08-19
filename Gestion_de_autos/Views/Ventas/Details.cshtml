@@ -1,0 +1,11 @@
+@model HistorialVendido
+@{ ViewData["Title"] = "Detalle de la venta"; }
+
+<h1>Venta de @Model.Vehiculo?.Marca @Model.Vehiculo?.Modelo</h1>
+<dl class="row">
+    <dt class="col-sm-3">Fecha</dt><dd class="col-sm-9">@Model.FechaVenta.ToString("dd/MM/yyyy")</dd>
+    <dt class="col-sm-3">Comprador</dt><dd class="col-sm-9">@Model.CompradorNombre (@Model.CompradorTelefono)</dd>
+    <dt class="col-sm-3">Precio final</dt><dd class="col-sm-9">$@Model.PrecioFinal.ToString("N2")</dd>
+    <dt class="col-sm-3">Vendedor</dt><dd class="col-sm-9">@Model.Vendedor?.Nombre</dd>
+</dl>
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

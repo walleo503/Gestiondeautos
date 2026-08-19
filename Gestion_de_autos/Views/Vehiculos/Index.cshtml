@@ -1,0 +1,39 @@
+@model IEnumerable<DatosAuto>
+@{ ViewData["Title"] = "Vehiculos"; }
+
+<h1>Vehiculos</h1>
+<p><a asp-action="Create" class="btn btn-primary">+ Nuevo vehiculo</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Marca</th><th>Modelo</th><th>Precio venta</th><th>Estado</th><th>Vendedor</th><th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Marca</td>
+                <td>@item.Modelo</td>
+                <td>$@item.PrecioVenta.ToString("N2")</td>
+                <td>
+                    @if (item.Estado == "disponible")
+                    {
+                        <span class="badge bg-success">Disponible</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Vendido</span>
+                    }
+                </td>
+                <td>@item.Vendedor?.Nombre</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Ver</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

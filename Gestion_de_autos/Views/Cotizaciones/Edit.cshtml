@@ -1,0 +1,39 @@
+@model CotizacionReparacion
+@{ ViewData["Title"] = "Editar cotizacion"; }
+
+<h1>Editar cotizacion</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label">Vendedor</label>
+        <select asp-for="Usuario" class="form-select" asp-items="ViewBag.Usuario"></select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Vehiculo</label>
+        <select asp-for="DatosAutoId" class="form-select" asp-items="ViewBag.DatosAutoId"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Pieza" class="form-label"></label>
+        <input asp-for="Pieza" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Modelo" class="form-label"></label>
+        <input asp-for="Modelo" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Precio" class="form-label"></label>
+        <input asp-for="Precio" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Otro" class="form-label"></label>
+        <input asp-for="Otro" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="ManoDeObra" class="form-label"></label>
+        <input asp-for="ManoDeObra" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

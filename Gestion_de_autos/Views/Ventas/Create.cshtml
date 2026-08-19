@@ -1,0 +1,35 @@
+@model HistorialVendido
+@{ ViewData["Title"] = "Registrar venta"; }
+
+<h1>Registrar venta</h1>
+<p class="text-muted">Solo aparecen los vehiculos que todavia estan disponibles.</p>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label class="form-label">Vendedor</label>
+        <select asp-for="Usuario" class="form-select" asp-items="ViewBag.Usuario"></select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Vehiculo</label>
+        <select asp-for="DatosAutoId" class="form-select" asp-items="ViewBag.DatosAutoId"></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CompradorNombre" class="form-label"></label>
+        <input asp-for="CompradorNombre" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="CompradorTelefono" class="form-label"></label>
+        <input asp-for="CompradorTelefono" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="PrecioFinal" class="form-label"></label>
+        <input asp-for="PrecioFinal" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="FechaVenta" class="form-label"></label>
+        <input asp-for="FechaVenta" type="date" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Registrar venta</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
