@@ -40,7 +40,7 @@ namespace Gestion_de_autos.Models
         public string? Otro { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column("mano_de_obra", TypeName = "decimal(10,2)")]
         [Display(Name = "Mano de obra")]
         public decimal ManoDeObra { get; set; }
 

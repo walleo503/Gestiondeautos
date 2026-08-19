@@ -25,12 +25,12 @@ namespace Gestion_de_autos.Models
         public string Modelo { get; set; } = string.Empty;
 
         [Required]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column("costo_compra", TypeName = "decimal(10,2)")]
         [Display(Name = "Costo de compra")]
         public decimal CostoCompra { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column("precio_venta", TypeName = "decimal(10,2)")]
         [Display(Name = "Precio de venta")]
         public decimal PrecioVenta { get; set; }
 
@@ -46,6 +46,7 @@ namespace Gestion_de_autos.Models
 
         [Required]
         [StringLength(255)]
+        [Column("piezas_faltantes")]
         [Display(Name = "Piezas faltantes")]
         public string PiezasFaltantes { get; set; } = string.Empty;
 

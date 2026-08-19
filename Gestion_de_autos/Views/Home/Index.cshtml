@@ -1,8 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model IEnumerable<DatosAuto>
+@{
+    ViewData["Title"] = "Vehiculos en venta";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-6">Vehiculos disponibles</h1>
+    <p class="text-muted">Explora el catalogo. Para agregar, editar o comprar necesitas iniciar sesion como vendedor.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Todavia no hay vehiculos disponibles en el catalogo.</div>
+}
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var auto in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">@auto.Marca @auto.Modelo</h5>
+                    <p class="card-text text-truncate">@auto.Descripcion</p>
+                    <p class="card-text"><strong class="text-success">$@auto.PrecioVenta.ToString("N2")</strong></p>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <a asp-controller="Vehiculos" asp-action="Details" asp-route-id="@auto.Id" class="btn btn-outline-primary btn-sm w-100">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="text-center mt-5">
+    <a asp-controller="Publico" asp-action="MasVendidos" class="btn btn-link">Ver vehiculos mas vendidos &raquo;</a>
 </div>

@@ -26,20 +26,23 @@ namespace Gestion_de_autos.Models
 
         [Required]
         [StringLength(100)]
+        [Column("comprador_nombre")]
         [Display(Name = "Nombre del comprador")]
         public string CompradorNombre { get; set; } = string.Empty;
 
         [StringLength(100)]
+        [Column("comprador_telefono")]
         [Display(Name = "Telefono del comprador")]
         public string? CompradorTelefono { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10,2)")]
+        [Column("precio_final", TypeName = "decimal(10,2)")]
         [Display(Name = "Precio final")]
         public decimal PrecioFinal { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
+        [Column("fecha_venta")]
         [Display(Name = "Fecha de venta")]
         public DateTime FechaVenta { get; set; } = DateTime.Today;
     }

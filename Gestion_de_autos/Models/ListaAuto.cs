@@ -22,6 +22,7 @@ namespace Gestion_de_autos.Models
         [ForeignKey("DatosAutoId")]
         public DatosAuto? Vehiculo { get; set; }
 
+        [Column("fecha_agregado")]
         public DateTime FechaAgregado { get; set; } = DateTime.Now;
     }
 }

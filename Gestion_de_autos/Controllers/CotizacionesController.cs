@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gestion_de_autos.Data;
+using Gestion_de_autos.Filters;
 using Gestion_de_autos.Models;
 
 namespace Gestion_de_autos.Controllers
 {
     // Administra la tabla cotizacion_reparacion (presupuestos de reparacion por vehiculo)
+    [SessionAuthorize]
     public class CotizacionesController : Controller
     {
         private readonly AppDbContext _context;

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gestion_de_autos.Data;
 using Gestion_de_autos.Models;
+using Gestion_de_autos.Filters;
 
 namespace Gestion_de_autos.Controllers
 {
@@ -10,13 +11,15 @@ namespace Gestion_de_autos.Controllers
         private readonly AppDbContext _context;
         public UsuariosController(AppDbContext context) => _context = context;
 
-        // GET /Usuarios  -> lista de vendedores registrados
+        // GET /Usuarios  -> lista de vendedores registrados (solo logueados)
+        [SessionAuthorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Usuarios.ToListAsync());
         }
 
         // GET /Usuarios/Details/5
+        [SessionAuthorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -43,6 +46,7 @@ namespace Gestion_de_autos.Controllers
         }
 
         // GET /Usuarios/Edit/5
+        [SessionAuthorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -52,6 +56,7 @@ namespace Gestion_de_autos.Controllers
         }
 
         // POST /Usuarios/Edit/5
+        [SessionAuthorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Telefono,Correo,Dui,Contrasena")] Usuario usuario)
@@ -67,6 +72,7 @@ namespace Gestion_de_autos.Controllers
         }
 
         // GET /Usuarios/Delete/5
+        [SessionAuthorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -76,6 +82,7 @@ namespace Gestion_de_autos.Controllers
         }
 
         // POST /Usuarios/Delete/5
+        [SessionAuthorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

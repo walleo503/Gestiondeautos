@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gestion_de_autos.Data;
+using Gestion_de_autos.Filters;
 using Gestion_de_autos.Models;
 
 namespace Gestion_de_autos.Controllers
@@ -9,6 +10,7 @@ namespace Gestion_de_autos.Controllers
     // Administra la tabla historial_vendidos (registro de ventas).
     // El trigger "after_venta_insert" en MySQL se encarga de marcar
     // el vehiculo como 'vendido' automaticamente al insertar aqui.
+    [SessionAuthorize]
     public class VentasController : Controller
     {
         private readonly AppDbContext _context;

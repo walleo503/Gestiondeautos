@@ -22,6 +22,7 @@ namespace Gestion_de_autos.Models
         [StringLength(100)]
         public string Contrasena { get; set; } = string.Empty;
 
+        [Column("fecha_login")]
         public DateTime FechaLogin { get; set; } = DateTime.Now;
     }
 }

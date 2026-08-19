@@ -7,7 +7,9 @@ namespace Gestion_de_autos.Models.Estadisticas
     {
         public string Marca { get; set; } = string.Empty;
         public string Modelo { get; set; } = string.Empty;
+        [Column("veces_vendido")]
         public int VecesVendido { get; set; }
+        [Column("total_generado")]
         public decimal TotalGenerado { get; set; }
     }
 }

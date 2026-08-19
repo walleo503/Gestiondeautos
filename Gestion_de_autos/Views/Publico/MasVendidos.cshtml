@@ -1,0 +1,24 @@
+@using Gestion_de_autos.Models.Estadisticas
+@model IEnumerable<VistaVehiculosMasVendidos>
+@{ ViewData["Title"] = "Vehiculos mas vendidos"; }
+
+<h1>Vehiculos mas vendidos</h1>
+<p class="text-muted">Estos son los modelos que mas se han vendido en nuestra plataforma.</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Marca</th><th>Modelo</th><th>Veces vendido</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <td>@v.Marca</td>
+                <td>@v.Modelo</td>
+                <td><span class="badge bg-primary">@v.VecesVendido</span></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al catalogo</a>
