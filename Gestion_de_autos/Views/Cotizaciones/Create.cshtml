@@ -23,7 +23,7 @@
     </div>
     <div class="mb-3">
         <label asp-for="Precio" class="form-label"></label>
-        <input asp-for="Precio" class="form-control" />
+        <input asp-for="Precio" id="precioPieza" class="form-control" />
     </div>
     <div class="mb-3">
         <label asp-for="Otro" class="form-label"></label>
@@ -31,9 +31,23 @@
     </div>
     <div class="mb-3">
         <label asp-for="ManoDeObra" class="form-label"></label>
-        <input asp-for="ManoDeObra" class="form-control" />
+        <input asp-for="ManoDeObra" id="manoDeObra" class="form-control" />
     </div>
-    <p class="text-muted">El total (precio + mano de obra) se calcula automaticamente al guardar.</p>
+    <div class="mb-3">
+        <label class="form-label">Total estimado</label>
+        <input type="text" id="totalEstimado" class="form-control" value="$0.00" readonly />
+        <div class="form-text">Se calcula automaticamente: precio de la pieza + mano de obra.</div>
+    </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>
+
+<script>
+    function actualizarTotal() {
+        const precio = parseFloat(document.getElementById('precioPieza').value) || 0;
+        const manoDeObra = parseFloat(document.getElementById('manoDeObra').value) || 0;
+        document.getElementById('totalEstimado').value = '$' + (precio + manoDeObra).toFixed(2);
+    }
+    document.getElementById('precioPieza').addEventListener('input', actualizarTotal);
+    document.getElementById('manoDeObra').addEventListener('input', actualizarTotal);
+</script>

@@ -27,6 +27,13 @@
         <input asp-for="PrecioFinal" class="form-control" />
     </div>
     <div class="mb-3">
+        <label class="form-label">Tipo de venta</label>
+        <select asp-for="TipoVenta" class="form-select">
+            <option value="original">Vendido en su estado original</option>
+            <option value="reparado">Vendido reparado</option>
+        </select>
+    </div>
+    <div class="mb-3">
         <label asp-for="FechaVenta" class="form-label"></label>
         <input asp-for="FechaVenta" type="date" class="form-control" />
     </div>

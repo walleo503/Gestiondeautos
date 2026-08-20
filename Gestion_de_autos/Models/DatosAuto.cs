@@ -53,5 +53,8 @@ namespace Gestion_de_autos.Models
         [Required]
         [StringLength(50)]
         public string Estado { get; set; } = "disponible";
+
+        // Lista de fotos asociadas a este vehiculo (relacion 1 a muchos)
+        public List<FotoAuto> Fotos { get; set; } = new();
     }
 }

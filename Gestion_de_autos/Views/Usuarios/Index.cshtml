@@ -1,13 +1,13 @@
 @model IEnumerable<Usuario>
-@{ ViewData["Title"] = "Vendedores"; }
+@{ ViewData["Title"] = "Empleados"; }
 
-<h1>Vendedores</h1>
-<p><a asp-action="Create" class="btn btn-primary">+ Nuevo vendedor</a></p>
+<h1>Empleados</h1>
+<p><a asp-action="Create" class="btn btn-primary">+ Nuevo empleado</a></p>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Nombre</th><th>Apellido</th><th>Telefono</th><th>Correo</th><th>DUI</th><th></th>
+            <th>Nombre</th><th>Apellido</th><th>Telefono</th><th>Correo</th><th>DUI</th><th>Rol</th><th>Estado</th><th></th>
         </tr>
     </thead>
     <tbody>
@@ -20,8 +20,38 @@
                 <td>@item.Correo</td>
                 <td>@item.Dui</td>
                 <td>
+                    @if (item.Rol == "administrador")
+                    {
+                        <span class="badge bg-dark">Administrador</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-info text-dark">Vendedor</span>
+                    }
+                </td>
+                <td>
+                    @if (item.Activo)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Suspendido</span>
+                    }
+                </td>
+                <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Ver</a>
                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <form asp-action="CambiarEstado" asp-route-id="@item.Id" method="post" class="d-inline">
+                        @if (item.Activo)
+                        {
+                            <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Suspender a @item.Nombre?')">Suspender</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-sm btn-outline-success" onclick="return confirm('Reactivar a @item.Nombre?')">Reactivar</button>
+                        }
+                    </form>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Eliminar</a>
                 </td>
             </tr>

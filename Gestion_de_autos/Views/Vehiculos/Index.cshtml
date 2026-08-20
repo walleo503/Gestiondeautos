@@ -4,6 +4,13 @@
 <h1>Vehiculos</h1>
 <p><a asp-action="Create" class="btn btn-primary">+ Nuevo vehiculo</a></p>
 
+<div class="btn-group mb-3">
+    <a asp-action="Index" class="btn btn-outline-secondary @(ViewBag.EstadoActual == null ? "active" : "")">Todos</a>
+    <a asp-action="Index" asp-route-estado="disponible" class="btn btn-outline-success @(ViewBag.EstadoActual == "disponible" ? "active" : "")">Disponibles</a>
+    <a asp-action="Index" asp-route-estado="reservado" class="btn btn-outline-warning @(ViewBag.EstadoActual == "reservado" ? "active" : "")">Reservados</a>
+    <a asp-action="Index" asp-route-estado="vendido" class="btn btn-outline-dark @(ViewBag.EstadoActual == "vendido" ? "active" : "")">Vendidos</a>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -21,6 +28,10 @@
                     @if (item.Estado == "disponible")
                     {
                         <span class="badge bg-success">Disponible</span>
+                    }
+                    else if (item.Estado == "reservado")
+                    {
+                        <span class="badge bg-warning text-dark">Reservado</span>
                     }
                     else
                     {

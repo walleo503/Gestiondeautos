@@ -3,7 +3,25 @@
 
 <h1>Editar vehiculo</h1>
 
-<form asp-action="Edit" method="post">
+@if (Model.Fotos != null && Model.Fotos.Any())
+{
+    <h5>Fotos actuales</h5>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        @foreach (var foto in Model.Fotos)
+        {
+            <div class="position-relative">
+                <img src="@foto.Ruta" style="width:120px;height:90px;object-fit:cover;" class="rounded border" />
+                <form asp-action="EliminarFoto" method="post" class="position-absolute top-0 end-0">
+                    <input type="hidden" name="fotoId" value="@foto.Id" />
+                    <input type="hidden" name="datosAutoId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-sm btn-danger" title="Eliminar foto" onclick="return confirm('Eliminar esta foto?')">x</button>
+                </form>
+            </div>
+        }
+    </div>
+}
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="mb-3">
@@ -42,8 +60,13 @@
         <label asp-for="Estado" class="form-label"></label>
         <select asp-for="Estado" class="form-select">
             <option value="disponible">Disponible</option>
+            <option value="reservado">Reservado</option>
             <option value="vendido">Vendido</option>
         </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Agregar mas fotos</label>
+        <input type="file" name="fotos" multiple accept="image/*" class="form-control" />
     </div>
     <button type="submit" class="btn btn-primary">Guardar cambios</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

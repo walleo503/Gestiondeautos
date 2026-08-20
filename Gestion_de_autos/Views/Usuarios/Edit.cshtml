@@ -1,7 +1,7 @@
 @model Usuario
-@{ ViewData["Title"] = "Editar vendedor"; }
+@{ ViewData["Title"] = "Editar empleado"; }
 
-<h1>Editar vendedor</h1>
+<h1>Editar empleado</h1>
 
 <form asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
@@ -29,6 +29,17 @@
     <div class="mb-3">
         <label asp-for="Contrasena" class="form-label"></label>
         <input asp-for="Contrasena" type="password" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Rol" class="form-label"></label>
+        <select asp-for="Rol" class="form-select">
+            <option value="vendedor">Vendedor</option>
+            <option value="administrador">Administrador</option>
+        </select>
+    </div>
+    <div class="mb-3 form-check">
+        <input asp-for="Activo" class="form-check-input" />
+        <label asp-for="Activo" class="form-check-label">Cuenta activa (desmarcar para suspender)</label>
     </div>
     <button type="submit" class="btn btn-primary">Guardar cambios</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

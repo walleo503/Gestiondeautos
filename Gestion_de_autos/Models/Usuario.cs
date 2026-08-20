@@ -37,5 +37,13 @@ namespace Gestion_de_autos.Models
         [StringLength(100)]
         [DataType(DataType.Password)]
         public string Contrasena { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(20)]
+        [Display(Name = "Rol")]
+        public string Rol { get; set; } = "vendedor"; // 'administrador' o 'vendedor'
+
+        [Display(Name = "Activo")]
+        public bool Activo { get; set; } = true; // false = suspendido, no puede iniciar sesion
     }
 }

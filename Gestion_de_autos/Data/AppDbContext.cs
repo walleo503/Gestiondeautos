@@ -15,12 +15,14 @@ namespace Gestion_de_autos.Data
         public DbSet<CotizacionReparacion> CotizacionesReparacion { get; set; }
         public DbSet<HistorialVendido> HistorialVendidos { get; set; }
         public DbSet<ListaAuto> ListaAutos { get; set; }
+        public DbSet<FotoAuto> FotosAuto { get; set; }
         public DbSet<LoginLog> LoginLogs { get; set; }
 
         // Las 3 vistas de estadisticas (solo lectura)
         public DbSet<VistaGananciasMensuales> GananciasMensuales { get; set; }
         public DbSet<VistaVehiculosMasVendidos> VehiculosMasVendidos { get; set; }
         public DbSet<VistaGananciasPorVendedor> GananciasPorVendedor { get; set; }
+        public DbSet<VistaVentasPorTipo> VentasPorTipo { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +30,7 @@ namespace Gestion_de_autos.Data
             modelBuilder.Entity<VistaGananciasMensuales>().HasNoKey().ToView("vista_ganancias_mensuales");
             modelBuilder.Entity<VistaVehiculosMasVendidos>().HasNoKey().ToView("vista_vehiculos_mas_vendidos");
             modelBuilder.Entity<VistaGananciasPorVendedor>().HasNoKey().ToView("vista_ganancias_por_vendedor");
+            modelBuilder.Entity<VistaVentasPorTipo>().HasNoKey().ToView("vista_ventas_por_tipo");
         }
     }
 }

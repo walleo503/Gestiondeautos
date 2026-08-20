@@ -22,6 +22,7 @@ namespace Gestion_de_autos.Controllers
         public async Task<IActionResult> Index()
         {
             var disponibles = await _context.DatosAuto
+                .Include(a => a.Fotos)
                 .Where(a => a.Estado == "disponible")
                 .OrderByDescending(a => a.Id)
                 .ToListAsync();

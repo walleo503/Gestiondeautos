@@ -6,20 +6,21 @@ using Gestion_de_autos.Filters;
 
 namespace Gestion_de_autos.Controllers
 {
+    // Gestion de empleados (vendedores y otros administradores).
+    // Todo este controlador es exclusivo del rol "administrador":
+    // un empleado normal (rol "vendedor") no puede entrar aqui.
+    [AdminOnly]
     public class UsuariosController : Controller
     {
         private readonly AppDbContext _context;
         public UsuariosController(AppDbContext context) => _context = context;
 
-        // GET /Usuarios  -> lista de vendedores registrados (solo logueados)
-        [SessionAuthorize]
+        // GET /Usuarios -> lista de empleados registrados
         public async Task<IActionResult> Index()
         {
             return View(await _context.Usuarios.ToListAsync());
         }
 
-        // GET /Usuarios/Details/5
-        [SessionAuthorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -28,16 +29,16 @@ namespace Gestion_de_autos.Controllers
             return View(usuario);
         }
 
-        // GET /Usuarios/Create
+        // GET /Usuarios/Create -> el administrador da de alta a un nuevo empleado
         public IActionResult Create() => View();
 
-        // POST /Usuarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Nombre,Apellido,Telefono,Correo,Dui,Contrasena")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Nombre,Apellido,Telefono,Correo,Dui,Contrasena,Rol")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
+                usuario.Activo = true;
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -45,8 +46,6 @@ namespace Gestion_de_autos.Controllers
             return View(usuario);
         }
 
-        // GET /Usuarios/Edit/5
-        [SessionAuthorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -55,11 +54,9 @@ namespace Gestion_de_autos.Controllers
             return View(usuario);
         }
 
-        // POST /Usuarios/Edit/5
-        [SessionAuthorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Telefono,Correo,Dui,Contrasena")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Apellido,Telefono,Correo,Dui,Contrasena,Rol,Activo")] Usuario usuario)
         {
             if (id != usuario.Id) return NotFound();
             if (ModelState.IsValid)
@@ -71,8 +68,20 @@ namespace Gestion_de_autos.Controllers
             return View(usuario);
         }
 
-        // GET /Usuarios/Delete/5
-        [SessionAuthorize]
+        // Suspende o reactiva un empleado sin necesidad de eliminarlo (boton de un click)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarEstado(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario != null)
+            {
+                usuario.Activo = !usuario.Activo; // si estaba activo lo suspende, y viceversa
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -81,8 +90,6 @@ namespace Gestion_de_autos.Controllers
             return View(usuario);
         }
 
-        // POST /Usuarios/Delete/5
-        [SessionAuthorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

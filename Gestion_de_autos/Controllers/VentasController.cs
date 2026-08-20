@@ -37,13 +37,13 @@ namespace Gestion_de_autos.Controllers
         {
             ViewData["Usuario"] = new SelectList(_context.Usuarios, "Id", "Nombre");
             ViewData["DatosAutoId"] = new SelectList(
-                _context.DatosAuto.Where(a => a.Estado == "disponible"), "Id", "Marca");
+                _context.DatosAuto.Where(a => a.Estado == "disponible" || a.Estado == "reservado"), "Id", "Marca");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Usuario,DatosAutoId,CompradorNombre,CompradorTelefono,PrecioFinal,FechaVenta")] HistorialVendido venta)
+        public async Task<IActionResult> Create([Bind("Usuario,DatosAutoId,CompradorNombre,CompradorTelefono,PrecioFinal,TipoVenta,FechaVenta")] HistorialVendido venta)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace Gestion_de_autos.Controllers
             }
             ViewData["Usuario"] = new SelectList(_context.Usuarios, "Id", "Nombre", venta.Usuario);
             ViewData["DatosAutoId"] = new SelectList(
-                _context.DatosAuto.Where(a => a.Estado == "disponible"), "Id", "Marca", venta.DatosAutoId);
+                _context.DatosAuto.Where(a => a.Estado == "disponible" || a.Estado == "reservado"), "Id", "Marca", venta.DatosAutoId);
             return View(venta);
         }
     }

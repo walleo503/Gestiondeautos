@@ -134,3 +134,46 @@ FROM historial_vendidos hv
 JOIN datos_auto da ON da.id = hv.datos_auto
 JOIN usuarios u     ON u.id = hv.usuario
 GROUP BY u.id;
+
+-- ============================
+-- FOTOS DE VEHICULOS (un vehiculo puede tener varias fotos)
+-- ============================
+
+CREATE TABLE fotos_auto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    datos_auto INT NOT NULL,
+    ruta VARCHAR(255) NOT NULL,          -- ruta relativa del archivo, ej: /uploads/vehiculos/5/foto1.jpg
+    fecha_subida DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (datos_auto) REFERENCES datos_auto(id) ON DELETE CASCADE
+);
+
+-- ============================
+-- TIPO DE VENTA: para diferenciar ganancias de autos vendidos
+-- en su estado original vs. reparados
+-- ============================
+
+ALTER TABLE historial_vendidos
+    ADD COLUMN tipo_venta ENUM('original','reparado') NOT NULL DEFAULT 'original' AFTER precio_final;
+
+-- Ganancias agrupadas por tipo de venta (para el grafico del vendedor)
+CREATE VIEW vista_ventas_por_tipo AS
+SELECT
+    hv.tipo_venta,
+    COUNT(hv.id)                           AS cantidad,
+    SUM(hv.precio_final - da.costo_compra) AS ganancia_total
+FROM historial_vendidos hv
+JOIN datos_auto da ON da.id = hv.datos_auto
+GROUP BY hv.tipo_venta;
+
+-- ============================
+-- ROLES Y SUSPENSION DE EMPLEADOS
+-- ============================
+
+ALTER TABLE usuarios ADD COLUMN rol VARCHAR(20) NOT NULL DEFAULT 'vendedor' AFTER contrasena;   -- 'administrador' o 'vendedor'
+ALTER TABLE usuarios ADD COLUMN activo TINYINT(1) NOT NULL DEFAULT 1 AFTER rol;                 -- 1 = activo, 0 = suspendido
+
+-- Crea el primer administrador para poder entrar al sistema
+-- (el registro publico ya no existe: solo un administrador puede crear cuentas nuevas)
+-- IMPORTANTE: cambia el correo y la contrasena antes de usarlo en produccion
+INSERT INTO usuarios (nombre, apellido, telefono, correo, DUI, contrasena, rol, activo)
+VALUES ('Admin', 'Principal', '00000000', 'admin@gestionautos.com', '00000000-0', 'admin123', 'administrador', 1);

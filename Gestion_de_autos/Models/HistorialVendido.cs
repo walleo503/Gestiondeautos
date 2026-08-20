@@ -41,6 +41,11 @@ namespace Gestion_de_autos.Models
         public decimal PrecioFinal { get; set; }
 
         [Required]
+        [Column("tipo_venta")]
+        [Display(Name = "Tipo de venta")]
+        public string TipoVenta { get; set; } = "original"; // 'original' o 'reparado'
+
+        [Required]
         [DataType(DataType.Date)]
         [Column("fecha_venta")]
         [Display(Name = "Fecha de venta")]

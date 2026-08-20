@@ -30,9 +30,16 @@ namespace Gestion_de_autos.Controllers
                 return View();
             }
 
+            if (!usuario.Activo)
+            {
+                ViewBag.Error = "Esta cuenta esta suspendida. Contacta al administrador.";
+                return View();
+            }
+
             // Guarda quien inicio sesion para usarlo en toda la app
             HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
             HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
+            HttpContext.Session.SetString("UsuarioRol", usuario.Rol);
 
             // Deja constancia en la tabla "login" (historial de accesos)
             _context.LoginLogs.Add(new LoginLog

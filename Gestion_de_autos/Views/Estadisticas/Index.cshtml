@@ -1,55 +1,67 @@
 @using Gestion_de_autos.Models.Estadisticas
+@using System.Text.Json
 @{
     ViewData["Title"] = "Estadisticas";
-    var ganMensuales = ViewData["GananciasMensuales"] as List<VistaGananciasMensuales>;
-    var masVendidos = ViewData["VehiculosMasVendidos"] as List<VistaVehiculosMasVendidos>;
-    var ganPorVendedor = ViewData["GananciasPorVendedor"] as List<VistaGananciasPorVendedor>;
+    var ganMensuales = ViewData["GananciasMensuales"] as List<VistaGananciasMensuales> ?? new();
+    var masVendidos = ViewData["VehiculosMasVendidos"] as List<VistaVehiculosMasVendidos> ?? new();
+    var ganPorVendedor = ViewData["GananciasPorVendedor"] as List<VistaGananciasPorVendedor> ?? new();
+    var ventasPorTipo = ViewData["VentasPorTipo"] as List<VistaVentasPorTipo> ?? new();
     string[] meses = { "", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+
+    // Datos ya ordenados para los graficos
+    var top10 = masVendidos.Take(10).ToList();
+    var menosVendidos = masVendidos.OrderBy(v => v.VecesVendido).Take(5).ToList();
+    var mensualesOrdenado = ganMensuales.OrderBy(g => g.Anio).ThenBy(g => g.Mes).ToList();
 }
 
 <h1>Estadisticas de ventas</h1>
 <p class="text-muted">Estos datos se calculan automaticamente desde las vistas SQL de la base de datos.</p>
 
-<h3 class="mt-4">Ganancias por mes</h3>
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <h5>Vehiculos mas vendidos</h5>
+        <canvas id="chartMasVendidos" height="220"></canvas>
+    </div>
+    <div class="col-md-6 mb-4">
+        <h5>Vendidos originales vs. reparados</h5>
+        <canvas id="chartTipoVenta" height="220"></canvas>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <h5>Ganancia por mes</h5>
+        <canvas id="chartGananciaMensual" height="120"></canvas>
+    </div>
+</div>
+
+<h3 class="mt-4">Vehiculos menos vendidos</h3>
+<table class="table table-bordered">
+    <thead><tr><th>Marca</th><th>Modelo</th><th>Veces vendido</th></tr></thead>
+    <tbody>
+        @foreach (var v in menosVendidos)
+        {
+            <tr><td>@v.Marca</td><td>@v.Modelo</td><td>@v.VecesVendido</td></tr>
+        }
+    </tbody>
+</table>
+
+<h3 class="mt-4">Ganancias por mes (detalle)</h3>
 <table class="table table-bordered">
     <thead>
         <tr><th>Vendedor</th><th>Mes</th><th>Autos vendidos</th><th>Total ventas</th><th>Ganancia</th></tr>
     </thead>
     <tbody>
-        @if (ganMensuales != null)
+        @foreach (var g in ganMensuales)
         {
-            @foreach (var g in ganMensuales)
-            {
-                <tr>
-                    <td>@g.Vendedor</td>
-                    <td>@meses[g.Mes] @g.Anio</td>
-                    <td>@g.AutosVendidos</td>
-                    <td>$@g.TotalVentas.ToString("N2")</td>
-                    <td class="text-success fw-bold">$@g.GananciaTotal.ToString("N2")</td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
-
-<h3 class="mt-4">Vehiculos mas vendidos</h3>
-<table class="table table-bordered">
-    <thead>
-        <tr><th>Marca</th><th>Modelo</th><th>Veces vendido</th><th>Total generado</th></tr>
-    </thead>
-    <tbody>
-        @if (masVendidos != null)
-        {
-            @foreach (var v in masVendidos)
-            {
-                <tr>
-                    <td>@v.Marca</td>
-                    <td>@v.Modelo</td>
-                    <td><span class="badge bg-primary">@v.VecesVendido</span></td>
-                    <td>$@v.TotalGenerado.ToString("N2")</td>
-                </tr>
-            }
+            <tr>
+                <td>@g.Vendedor</td>
+                <td>@meses[g.Mes] @g.Anio</td>
+                <td>@g.AutosVendidos</td>
+                <td>$@g.TotalVentas.ToString("N2")</td>
+                <td class="text-success fw-bold">$@g.GananciaTotal.ToString("N2")</td>
+            </tr>
         }
     </tbody>
 </table>
@@ -60,16 +72,63 @@
         <tr><th>Vendedor</th><th>Autos vendidos</th><th>Ganancia total</th></tr>
     </thead>
     <tbody>
-        @if (ganPorVendedor != null)
+        @foreach (var g in ganPorVendedor)
         {
-            @foreach (var g in ganPorVendedor)
-            {
-                <tr>
-                    <td>@g.Vendedor</td>
-                    <td>@g.AutosVendidos</td>
-                    <td class="text-success fw-bold">$@g.GananciaTotal.ToString("N2")</td>
-                </tr>
-            }
+            <tr>
+                <td>@g.Vendedor</td>
+                <td>@g.AutosVendidos</td>
+                <td class="text-success fw-bold">$@g.GananciaTotal.ToString("N2")</td>
+            </tr>
         }
     </tbody>
 </table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+    // --- Datos que vienen desde el servidor (C#) convertidos a JSON para Chart.js ---
+    const masVendidosLabels = @Html.Raw(JsonSerializer.Serialize(top10.Select(v => v.Marca + " " + v.Modelo)));
+    const masVendidosData = @Html.Raw(JsonSerializer.Serialize(top10.Select(v => v.VecesVendido)));
+
+    const tipoVentaLabels = @Html.Raw(JsonSerializer.Serialize(ventasPorTipo.Select(v => v.TipoVenta == "reparado" ? "Reparados" : "Estado original")));
+    const tipoVentaCantidad = @Html.Raw(JsonSerializer.Serialize(ventasPorTipo.Select(v => v.Cantidad)));
+    const tipoVentaGanancia = @Html.Raw(JsonSerializer.Serialize(ventasPorTipo.Select(v => v.GananciaTotal)));
+
+    const mesesLabels = @Html.Raw(JsonSerializer.Serialize(mensualesOrdenado.Select(g => meses[g.Mes] + " " + g.Anio)));
+    const gananciaMensualData = @Html.Raw(JsonSerializer.Serialize(mensualesOrdenado.Select(g => g.GananciaTotal)));
+
+    new Chart(document.getElementById('chartMasVendidos'), {
+        type: 'bar',
+        data: {
+            labels: masVendidosLabels,
+            datasets: [{ label: 'Veces vendido', data: masVendidosData, backgroundColor: '#0d6efd' }]
+        },
+        options: { plugins: { legend: { display: false } }, indexAxis: 'y' }
+    });
+
+    new Chart(document.getElementById('chartTipoVenta'), {
+        type: 'pie',
+        data: {
+            labels: tipoVentaLabels,
+            datasets: [{
+                label: 'Ganancia',
+                data: tipoVentaGanancia,
+                backgroundColor: ['#198754', '#fd7e14']
+            }]
+        }
+    });
+
+    new Chart(document.getElementById('chartGananciaMensual'), {
+        type: 'line',
+        data: {
+            labels: mesesLabels,
+            datasets: [{
+                label: 'Ganancia mensual ($)',
+                data: gananciaMensualData,
+                borderColor: '#198754',
+                backgroundColor: 'rgba(25,135,84,0.15)',
+                fill: true,
+                tension: 0.3
+            }]
+        }
+    });
+</script>

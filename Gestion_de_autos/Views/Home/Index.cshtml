@@ -18,6 +18,16 @@
     {
         <div class="col">
             <div class="card h-100 shadow-sm">
+                @if (auto.Fotos != null && auto.Fotos.Any())
+                {
+                    <img src="@auto.Fotos.First().Ruta" class="card-img-top" style="height:180px;object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height:180px;">
+                        <span class="text-muted">Sin foto</span>
+                    </div>
+                }
                 <div class="card-body">
                     <h5 class="card-title">@auto.Marca @auto.Modelo</h5>
                     <p class="card-text text-truncate">@auto.Descripcion</p>

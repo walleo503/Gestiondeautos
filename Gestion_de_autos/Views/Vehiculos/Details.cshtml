@@ -2,14 +2,83 @@
 @{ ViewData["Title"] = "Detalle del vehiculo"; }
 
 <h1>@Model.Marca @Model.Modelo</h1>
+
+@if (Model.Fotos != null && Model.Fotos.Any())
+{
+    <div class="d-flex flex-wrap gap-2 mb-3">
+        @foreach (var foto in Model.Fotos)
+        {
+            <img src="@foto.Ruta" style="width:200px;height:150px;object-fit:cover;" class="rounded border" />
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-secondary">Este vehiculo todavia no tiene fotos.</div>
+}
+
 <dl class="row">
-    <dt class="col-sm-3">Vendedor</dt><dd class="col-sm-9">@Model.Vendedor?.Nombre</dd>
-    <dt class="col-sm-3">Costo de compra</dt><dd class="col-sm-9">$@Model.CostoCompra.ToString("N2")</dd>
-    <dt class="col-sm-3">Precio de venta</dt><dd class="col-sm-9">$@Model.PrecioVenta.ToString("N2")</dd>
+    <dt class="col-sm-3">Precio de venta</dt><dd class="col-sm-9"><strong class="text-success">$@Model.PrecioVenta.ToString("N2")</strong></dd>
     <dt class="col-sm-3">Descripcion</dt><dd class="col-sm-9">@Model.Descripcion</dd>
     <dt class="col-sm-3">Danos</dt><dd class="col-sm-9">@Model.Danos</dd>
     <dt class="col-sm-3">Piezas faltantes</dt><dd class="col-sm-9">@Model.PiezasFaltantes</dd>
-    <dt class="col-sm-3">Estado</dt><dd class="col-sm-9">@Model.Estado</dd>
+    <dt class="col-sm-3">Estado</dt>
+    <dd class="col-sm-9">
+        @if (Model.Estado == "disponible")
+        {
+            <span class="badge bg-success">Disponible</span>
+        }
+        else if (Model.Estado == "reservado")
+        {
+            <span class="badge bg-warning text-dark">Reservado</span>
+        }
+        else
+        {
+            <span class="badge bg-secondary">Vendido</span>
+        }
+    </dd>
+
+    @if (Context.Session.GetInt32("UsuarioId") != null)
+    {
+        <dt class="col-sm-3">Costo de compra</dt><dd class="col-sm-9">$@Model.CostoCompra.ToString("N2")</dd>
+    }
 </dl>
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+
+<hr />
+
+<h4>Contactar al vendedor</h4>
+<p>@Model.Vendedor?.Nombre @Model.Vendedor?.Apellido</p>
+
+@{
+    var asuntoCorreo = Uri.EscapeDataString($"Interes en {Model.Marca} {Model.Modelo}");
+    var cuerpoCorreo = Uri.EscapeDataString(
+        $"Hola {Model.Vendedor?.Nombre}, estoy interesado en el {Model.Marca} {Model.Modelo} " +
+        $"publicado en ${Model.PrecioVenta:N2}. Quisiera mas informacion / una cotizacion de reparacion.");
+    var mensajeWhatsapp = Uri.EscapeDataString(
+        $"Hola {Model.Vendedor?.Nombre}, estoy interesado en el {Model.Marca} {Model.Modelo} " +
+        $"publicado en ${Model.PrecioVenta:N2}. Quisiera mas informacion.");
+    var telefonoLimpio = new string((Model.Vendedor?.Telefono ?? "").Where(char.IsDigit).ToArray());
+}
+
+<div class="d-flex gap-2">
+    @if (!string.IsNullOrEmpty(Model.Vendedor?.Correo))
+    {
+        <a class="btn btn-outline-primary" href="mailto:@Model.Vendedor.Correo?subject=@asuntoCorreo&body=@cuerpoCorreo">
+            Contactar por correo
+        </a>
+    }
+    @if (!string.IsNullOrEmpty(telefonoLimpio))
+    {
+        <a class="btn btn-success" target="_blank" href="https://wa.me/@telefonoLimpio?text=@mensajeWhatsapp">
+            Contactar por WhatsApp
+        </a>
+    }
+</div>
+
+<div class="mt-4">
+    @if (Context.Session.GetInt32("UsuarioId") != null)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</div>

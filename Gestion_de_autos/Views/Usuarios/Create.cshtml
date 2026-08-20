@@ -1,7 +1,8 @@
 @model Usuario
-@{ ViewData["Title"] = "Nuevo vendedor"; }
+@{ ViewData["Title"] = "Nuevo empleado"; }
 
-<h1>Registrar vendedor</h1>
+<h1>Registrar empleado</h1>
+<p class="text-muted">Solo un administrador puede dar de alta cuentas nuevas.</p>
 
 <form asp-action="Create" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -17,6 +18,7 @@
     <div class="mb-3">
         <label asp-for="Telefono" class="form-label"></label>
         <input asp-for="Telefono" class="form-control" />
+        <div class="form-text">Incluye el codigo de pais (ej. 503) para que funcione el boton de WhatsApp.</div>
     </div>
     <div class="mb-3">
         <label asp-for="Correo" class="form-label"></label>
@@ -29,6 +31,13 @@
     <div class="mb-3">
         <label asp-for="Contrasena" class="form-label"></label>
         <input asp-for="Contrasena" type="password" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Rol" class="form-label"></label>
+        <select asp-for="Rol" class="form-select">
+            <option value="vendedor">Vendedor</option>
+            <option value="administrador">Administrador</option>
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

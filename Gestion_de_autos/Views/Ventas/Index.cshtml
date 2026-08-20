@@ -7,7 +7,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Fecha</th><th>Vehiculo</th><th>Comprador</th><th>Precio final</th><th>Vendedor</th><th></th>
+            <th>Fecha</th><th>Vehiculo</th><th>Tipo</th><th>Comprador</th><th>Precio final</th><th>Vendedor</th><th></th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +16,16 @@
             <tr>
                 <td>@item.FechaVenta.ToString("dd/MM/yyyy")</td>
                 <td>@item.Vehiculo?.Marca @item.Vehiculo?.Modelo</td>
+                <td>
+                    @if (item.TipoVenta == "reparado")
+                    {
+                        <span class="badge bg-warning text-dark">Reparado</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-info text-dark">Original</span>
+                    }
+                </td>
                 <td>@item.CompradorNombre</td>
                 <td>$@item.PrecioFinal.ToString("N2")</td>
                 <td>@item.Vendedor?.Nombre</td>
